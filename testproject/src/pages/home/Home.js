@@ -85,7 +85,7 @@ const Home = () => {
     try {
       const config = {
         method: 'delete',
-        url: `${API_ENDPOINT}/delete/${selectedTodo.id}`,
+        url: `${API_ENDPOINT}/delete/${todoId}`,
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${API_TOKEN}`
