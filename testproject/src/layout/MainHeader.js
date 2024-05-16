@@ -27,6 +27,9 @@ function MainHeader() {
             <NavItem className="me-3">
               <Link to="/">Home</Link>
             </NavItem>
+            <NavItem className="me-3">
+            <Link to="/home/todolist">Todolist</Link>
+            </NavItem>
             {userData && (
               <NavDropdown title={userData.username} id="basic-nav-dropdown" className="me-3">
                 <NavDropdown.Item onClick={handleLogout}>Logout</NavDropdown.Item>
