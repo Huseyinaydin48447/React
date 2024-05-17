@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Form, Button } from 'react-bootstrap';
+import { Form, Input, Button, Card, message } from 'antd';
 import { useNavigate, Link } from 'react-router-dom';
 import secureLocalStorage from 'react-secure-storage';
 import axios from 'axios';
@@ -10,70 +10,94 @@ const Login = ({ setLoggedInUser }) => {
     username: '',
     password: '',
   });
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+
+  const handleSubmit = async () => {
     const { username, password } = formData;
 
     try {
       const response = await axios.post(
-        'https://todo-web-app-flame-server.vercel.app/login',
+        `${process.env.REACT_APP_API_ENDPOINT}/login`,
         {
           username: username,
-          password: password, 
+          password: password,
         },
         {
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAsImlhdCI6MTcxNTYxNzczMiwiZXhwIjoxNzE4MjA5NzMyfQ.k6ZRaAcbNoRPEZVIVxM6ltZoePBcyeIf2Y_cCmTr3Po',
           },
         }
       );
-
-   
       const userData = {
-        username: response.data.finalData.userDetails, 
-        JWTAccessToken: response.data.finalData.JWTAccessToken
+        username: response.data.finalData.userDetails,
+        JWTAccessToken: response.data.finalData.JWTAccessToken,
       };
       secureLocalStorage.setItem('userData', JSON.stringify(userData));
-    
-      navigate('/home'); // Navigate to the Home component
+
+      navigate('/home/todolist');
       console.log('Login response:', response.data);
       console.log('Login response data:', JSON.stringify(response.data));
-
     } catch (error) {
       console.error('Login error:', error);
-      alert('Yanlış kullanıcı adı veya şifre');
+      message.error('Yanlış kullanıcı adı veya şifre');
     }
   };
 
-  const handleChange = (event) => {
-    const { name, value } = event.target;
+  const handleChange = (e) => {
+    const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
   return (
-    <Form style={{ marginTop: '20px' }} onSubmit={handleSubmit}>
-      <Form.Group className="mb-3" controlId="formBasicEmail">
-        <Form.Label>Email address</Form.Label>
-        <Form.Control type="email" placeholder="Enter email" name='username' required onChange={handleChange} />
-        <Form.Text className="text-muted">
-          We'll never share your email with anyone else.
-        </Form.Text>
-      </Form.Group>
+    <div style={{ background: '#141414', minHeight: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+      <Card
+        title={'Login'}
+        style={{ boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)', width: '400px' }}
+      >
+        <Form
+          name="login"
+          initialValues={{ remember: true }}
+          onFinish={handleSubmit}
+        >
+          <Form.Item
+            name="username"
+            rules={[{ required: true, message: 'Lütfen kullanıcı adınızı girin!' }]}
+          >
+            <Input
+              placeholder="Kullanıcı Adı"
+              size='large'
+              name="username"
+              onChange={handleChange}
+            />
+          </Form.Item>
 
-      <Form.Group className="mb-3" controlId="formBasicPassword">
-        <Form.Label>Password</Form.Label>
-        <Form.Control type="password" placeholder="Password" name='password' required onChange={handleChange} />
-      </Form.Group>
+          <Form.Item
+            name="password"
+            rules={[{ required: true, message: 'Lütfen şifrenizi girin!' }]}
+          >
+            <Input.Password
+              placeholder="Şifre"
+              size='large'
+              name="password"
+              onChange={handleChange}
+            />
+          </Form.Item>
 
-      <Button variant="primary" type="submit">
-        Submit
-      </Button>
-      <br></br>
-      <Form.Text className="text-muted">
-        If you don't have an account, <Link to="/register"><b>sign up</b></Link>
-      </Form.Text>
-    </Form>
+          <Form.Item>
+            <Button
+              type="primary"
+              htmlType="submit"
+              disabled={!formData.username || !formData.password}
+            >
+             Login
+            </Button>
+          </Form.Item>
+
+          <Form.Item>
+            <span>Don't have an account?  <Link to="/register"><b>Register here!</b></Link></span>
+          </Form.Item>
+        </Form>
+      </Card>
+    </div>
   );
 };
 

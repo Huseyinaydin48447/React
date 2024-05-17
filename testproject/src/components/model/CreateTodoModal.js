@@ -1,13 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import DatePicker from 'react-datepicker';
 import { format } from 'date-fns';
 
-const CreateTodoModal = ({ show, handleClose, formData, handleChange, handleSubmit, handleCancel }) => {
+const CreateTodoModal = ({ show, handleClose, formData, handleChange, handleSubmit, handleCancel ,  isSubmitting
+}) => {
   const [startDate, setStartDate] = useState(new Date());
 
+  useEffect(() => {
+    if (!show) {
+      setStartDate(new Date()); 
+    }
+  }, [show]);
   return (
     <Modal show={show} onHide={handleClose}>
       <Modal.Header closeButton>
@@ -23,6 +29,7 @@ const CreateTodoModal = ({ show, handleClose, formData, handleChange, handleSubm
               name="text"
               value={formData.text}
               onChange={handleChange}
+              required
             />
           </Form.Group>
 
@@ -33,7 +40,7 @@ const CreateTodoModal = ({ show, handleClose, formData, handleChange, handleSubm
               selected={startDate}
               onChange={(date) => {
                 setStartDate(date);
-                const formattedDate = format(date, 'dd-MM-yyyy');
+                const formattedDate = format(date, 'dd/MM/yyyy');
                 handleChange({ target: { name: 'time', value: formattedDate } });
               }}
               dateFormat="dd/MM/yyyy"
@@ -42,9 +49,10 @@ const CreateTodoModal = ({ show, handleClose, formData, handleChange, handleSubm
           </Form.Group>
           <br></br>
 
-          <Button variant="primary" type="submit">
-            Submit
+          <Button variant="primary" type="submit" disabled={isSubmitting}>
+            {isSubmitting ? 'Submitting...' : 'Submit'}
           </Button>
+
           <Button variant="danger" onClick={handleCancel}>
             Cancel
           </Button>

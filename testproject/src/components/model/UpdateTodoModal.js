@@ -25,6 +25,7 @@ const UpdateTodoModal = ({ show, handleClose, formData, handleChange, handleSubm
               name="text"
               value={formData.text}
               onChange={handleChange}
+              required
             />
           </Form.Group>
 

@@ -1,87 +1,122 @@
-import React from 'react'
-import { Card, Form, Button } from 'react-bootstrap'
-import { useState } from 'react';
+import React, { useState } from 'react';
+import { Form, Input, Button, Card } from 'antd';
 import { useNavigate, Link } from 'react-router-dom';
-import secureLocalStorage from 'react-secure-storage';
 import axios from 'axios';
+import LayoutFooter from '../../layout/LayoutFooter';
 
 const Register = () => {
-  const navigate = useNavigate();
-
   const [formData, setFormData] = useState({
     username: '',
     password: '',
-
   });
+  const navigate = useNavigate();
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const { username, password } = formData;
-
-
-
-
-
-
-    let config = {
-      method: 'post',
-      maxBodyLength: Infinity,
-      url: 'https://todo-web-app-flame-server.vercel.app/register',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      data: formData
-    };
-
-    axios.request(config)
-      .then((response) => {
-        console.log(JSON.stringify(response.data));
-      })
-      .catch((error) => {
-        console.log(error);
+  const handleSubmit = async () => {
+    try {
+      const response = await axios.post(`${process.env.REACT_APP_API_ENDPOINT}/register`, formData, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
       });
-
-
+      console.log(JSON.stringify(response.data));
+      navigate('/login');
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  const handleChange = (event) => {
-    const { name, value, } = event.target;
+  const handleChange = (e) => {
+    const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
+
   return (
-    <>
-      <Card body title='REGISTER'>
+    <div style={{ background: '#141414', minHeight: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexGrow: 1 }}>
+        <Card
+          title={'TODO APP REGISTER USER'}
+          style={{ boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)', marginTop: '5vh', width: '400px' }}
+        >
+          <Form
+            name="register"
+            initialValues={{ remember: true }}
+            onFinish={handleSubmit}
+          >
+            <div style={{ marginBottom: '16px'}}>
+              <label htmlFor="username" style={{ display: 'block', marginBottom: '8px' }}>
+                <span style={{ color: 'red' }}>*</span>Username
+              </label>
+              <Form.Item
+                name="username"
+                rules={[{ required: true, message: 'Lütfen username adresinizi girin!' }]}
+                hasFeedback
+              >
+                <Input
+                  placeholder="username"
+                  size='large'
+                  name="username"
+                  onChange={handleChange}
+                />
+              </Form.Item>
+            </div>
 
-        <h1>Register</h1>
-        <Form style={{ marginTop: '20px' }} onSubmit={handleSubmit} >
-          <Form.Group className="mb-3" controlId="formBasicEmail">
-            <Form.Label>Email address</Form.Label>
-            <Form.Control type="text" name='username' placeholder="Enter email" required onChange={handleChange} />
-            <Form.Text className="text-muted">
-              We'll never share your email with anyone else.
-            </Form.Text>
-          </Form.Group>
+            <div style={{ marginBottom: '16px' }}>
+              <label htmlFor="password" style={{ display: 'block', marginBottom: '8px' }}> <span style={{ color: 'red' }}>*</span>Password</label>
+              <Form.Item
+                name="password"
+                rules={[{ required: true, message: 'Lütfen şifrenizi girin!' }]}
+                hasFeedback
+              >
+                <Input.Password
+                  placeholder="Password"
+                  name="password"
+                  onChange={handleChange}
+                />
+              </Form.Item>
+            </div>
 
-          <Form.Group className="mb-3" controlId="formBasicPassword">
-            <Form.Label>Password</Form.Label>
-            <Form.Control type="password" name='password' placeholder="Password" required onChange={handleChange} />
-          </Form.Group>
-          <Form.Group className="mb-3" controlId="formBasicPassword">
-            <Form.Label>Reenter Password</Form.Label>
-            <Form.Control type="password" name='psw2' placeholder="Password" required />
-          </Form.Group>
+            <div style={{ marginBottom: '16px' }}>
+              <label htmlFor="confirm" style={{ display: 'block', marginBottom: '8px' }}> <span style={{ color: 'red' }}>*</span>Confirm Password</label>
+              <Form.Item
+                name="confirm"
+                dependencies={['password']}
+                hasFeedback
+                rules={[
+                  { required: true, message: 'Lütfen şifrenizi tekrar girin!' },
+                  ({ getFieldValue }) => ({
+                    validator(_, value) {
+                      if (!value || getFieldValue('password') === value) {
+                        return Promise.resolve();
+                      }
+                      return Promise.reject(new Error('İki şifre birbiriyle uyuşmuyor!'));
+                    },
+                  }),
+                ]}
+              >
+                <Input.Password
+                  placeholder="Confirm Password"
+                  name="confirm"
+                />
+              </Form.Item>
+            </div>
 
-          <Button variant="primary" disabled={formData.username !== "" && formData.password !== "" ? false : true} type="submit">
-            Submit
-          </Button>
-          <br></br>
-          <Form.Text className="text-muted">
-            <Link to="/login"><b>Login </b></Link> if you have an account
-          </Form.Text>
-        </Form>
-      </Card>
-    </>
-  )
-}
+            <Form.Item>
+              <Button
+                type="primary"
+                htmlType="submit"
+                disabled={!formData.username || !formData.password}
+              >
+                Kayıt Ol
+              </Button>
+              <br></br>
+              <label style={{ display: 'block', marginBottom: '8px' }}>Already have an account?  <Link to="/login"><b>Login here!</b></Link> </label>
+            </Form.Item>
+          </Form>
+        </Card>
+      </div>
+      <LayoutFooter   />
+    </div>
+  );
+};
 
-export default Register
+export default Register;
