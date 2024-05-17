@@ -25,10 +25,10 @@ function MainHeader() {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto flex-row">
             <NavItem className="me-3">
-              <Link to="/">Home</Link>
+            <Link to="/home/todolist">Todolist</Link>
             </NavItem>
             <NavItem className="me-3">
-            <Link to="/home/todolist">Todolist</Link>
+           
             </NavItem>
             {userData && (
               <NavDropdown title={userData.username} id="basic-nav-dropdown" className="me-3">
