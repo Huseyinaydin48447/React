@@ -1,0 +1,186 @@
+.product-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+.product-card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+}
+
+.product-card img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
+}
+
+
+
+.product-card p {
+  font-size: 1rem;
+  color: #555;
+}
+
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f9f9f9;
+  color: #333;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.menu-icon {
+  font-size: 24px;
+  cursor: pointer;
+  position: fixed;
+  top: 60px;
+  margin: 20px;
+  right: 20px;
+}
+
+.menu-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  max-width: 400px;
+  padding: 35px;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+.filters {
+  margin: 20px 0;
+}
+
+.filter-section {
+  margin-bottom: 20px;
+}
+
+.filter-section select,
+.price-range-inputs input,
+.filter-section h3 {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-top: 5px;
+}
+
+.price-range-inputs {
+  display: flex;
+  justify-content: space-between;
+}
+
+.product-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+.product-card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+  background-color: #fff;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.product-card img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
+}
+
+.product-card h3 {
+  font-size: 1.2rem;
+  margin: 10px 0;
+}
+
+.product-card p {
+  font-size: 1rem;
+  color: #555;
+}
+
+
+
+.review-button {
+  display: block;
+  margin: 10px auto;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 8px;
+  background-color: #007BFF;
+  color: #fff;
+  border: none;
+}
+
+.review-button:hover {
+  background-color: #0056b3;
+}
+
+
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  position: relative;
+  max-width: 80%;
+  max-height: 80%;
+  text-align: center;
+}
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.review-button {
+  display: block;
+  margin: 10px auto;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 8px;
+  background-color: #007BFF;
+  color: #fff;
+  border: none;
+}
+
+.review-button:hover {
+  background-color: #0056b3;
+}
